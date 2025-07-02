@@ -3,6 +3,10 @@
     With Packer installed, it is time to build your first image. In this tutorial, you will build a t2.micro Amazon EC2 AMI. This tutorial will
     provision resources that qualify under the AWS free-tier. If your account doesn't qualify under the  AWS free-tier, we're not responsible
     for any charges that you may incur.
+
+    .Notes
+    Packer Shared Credentials File are used in this tutorial to store Amazon credentials on Windows located in %username%/.aws/credentials. If 
+    the Amazon builder does not detect credentials inline, or in the environment, the plugin will check this location.
 /*
 
 /*
@@ -14,8 +18,8 @@
 packer {
   required_plugins {
     amazon = {
-      version = ">= 1.3.6"                    # The version attribute is optional, but Hashicorp recommends using it.
-      source  = "github.com/hashicorp/amazon" # The source attribute is only necesssary when requiring a plugin outside the HashiCorp domain.
+      version = ">= 1.2.8"
+      source  = "github.com/hashicorp/amazon"
     }
   }
 }
@@ -54,28 +58,4 @@ build {
   sources = [
     "source.amazon-ebs.ubuntu"
   ]
-
-  provisioner "shell" {
-    inline = [
-      "sudo apt update",
-      "sudo apt install nginx -y",
-      "sudo systemctl enable nginx",
-      "sudo systemctl start nginx",
-      "sudo ufw allow proto tcp from any to any port 22,80,443",
-      "echo 'y' | sudo ufw enabled"
-    ]
-  }
-
-/*
-  ----------------------
-  - POST-PROCESSOR BLOCK
-  - Post-processors allow you to modify Packers output images.
-  ----------------------
-*/
-  post-processor "vagrant" {
-
-  }
-  post-processor "compress" {
-
-  }
 }
