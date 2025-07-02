@@ -42,9 +42,9 @@ locals {
   ----------------------
 */
 variable "flavor" {
-  type        = string
   default     = "strawberry"
   description = ""
+  type        = string
 }
 
 /*
@@ -74,6 +74,7 @@ build {
   provisioner "type" {
 
   }
+
 /*
   ----------------------
   - POST-PROCESSOR BLOCK
